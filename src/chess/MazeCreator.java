@@ -1,5 +1,8 @@
 package chess;
 
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+
 import java.util.*;
 
 public class MazeCreator {
@@ -11,9 +14,11 @@ public class MazeCreator {
     private Coordinate exit;
     private int doorIn;
     private int doorOut;
+    private GraphicsContext gc;
 
-    public MazeCreator(int n) {
+    public MazeCreator(int n,GraphicsContext gc) {
         this.maze = new Maze(n);
+        this.gc = gc;
         this.size = maze.getSize();
         doorIn = randomNumber.nextInt(this.size);
         doorOut = randomNumber.nextInt(this.size);
@@ -36,6 +41,23 @@ public class MazeCreator {
     public void printMaze() {
         for (int i = 0; i < this.size; i++) {
             for (int j = 0; j < this.size; j++) {
+                if (antre.getX() == i && antre.getY() == j ||
+                    exit.getX() == i && exit.getY() == j) {
+                    gc.setStroke(Color.BLACK);
+                }
+                else if (i == 0 || j == 0 || i == this.size - 1 || j == this.size -1) {
+                    gc.setStroke(Color.BLUE);
+                }
+                else if (maze.getMaze()[i][j].isWall()) {
+                    gc.setStroke(Color.GREEN);
+                } else if (maze.getMaze()[i][j].isSign()){
+                    gc.setStroke(Color.CYAN);
+                } else {
+                    gc.setStroke(Color.WHITE);
+                }
+                gc.strokeLine(i*10, j*10, i*10, j*10);
+
+                /*
                 String sign = "  ";
                 if (maze.getMaze()[i][j].isWall()) {
                     sign = "X ";
@@ -43,10 +65,11 @@ public class MazeCreator {
                     sign = ". ";
                 }
                 System.out.print(sign);
+                */
             }
-            System.out.println();
+            //System.out.println();
         }
-        System.out.println();
+        //System.out.println();
     }
 
     public void startDigging() {
@@ -65,6 +88,7 @@ public class MazeCreator {
         spot.setWall(false);
         spot.setSign(true);
 
+
         /*
         printMaze();
         try {
@@ -73,6 +97,7 @@ public class MazeCreator {
             e.printStackTrace();
         }
         */
+
 
 
         if (new Coordinate(spot.getX(), spot.getY() + 1).equals(this.exit)) {
