@@ -14,10 +14,17 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.ArcType;
 import javafx.stage.Stage;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 public class Main extends Application {
 
     Stage window;
     Scene scene;
+    Canvas canvas;
+    int sizeOfCanvas = 50;
+    ExecutorService threadPool = Executors.newFixedThreadPool(1);
+
 
     public static void main(String[] args) {
         launch(args);
@@ -28,23 +35,19 @@ public class Main extends Application {
         window = primaryStage;
 
 
-        TextField textField = new TextField();
-        textField.setPromptText("50");
-
         Label label1 = new Label("Push to draw");
         Button button1 = new Button("Create maze");
 
 
-
         HBox hBox = new HBox();
-        hBox.getChildren().addAll(button1, textField);
+        hBox.getChildren().addAll(button1);
 
         BorderPane bp = new BorderPane();
         bp.setTop(hBox);
 
 
         Group root = new Group();
-        Canvas canvas = new Canvas(500, 500);
+        canvas = new Canvas(499, 499);
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
         drawShapes(gc);
@@ -52,8 +55,11 @@ public class Main extends Application {
 
         bp.setCenter(root);
 
+        MazeRunner mazeRunner = new MazeRunner(gc);
+
+
         button1.setOnAction(e -> {
-            startMaze( gc);
+            threadPool.submit(mazeRunner);
         });
 
         scene = new Scene(bp);
@@ -65,7 +71,7 @@ public class Main extends Application {
     }
 
     private void startMaze(GraphicsContext gc) {
-        MazeCreator mazeCreator = new MazeCreator(50, gc);
+        MazeCreator mazeCreator = new MazeCreator(gc);
         mazeCreator.startDigging();
         mazeCreator.printMaze();
         System.out.println("ready");
@@ -74,12 +80,12 @@ public class Main extends Application {
     private void drawShapes(GraphicsContext gc) {
         gc.setFill(Color.GREEN);
         gc.setLineWidth(10);
-        gc.fillRect(0, 0, 500, 500);
+        gc.fillRect(0, 0, 499, 499);
         gc.setStroke(Color.BLUE);
-        gc.strokeLine(0, 0, 0, 500);
-        gc.strokeLine(0, 500, 500, 500);
-        gc.strokeLine(500, 500, 500, 0);
-        gc.strokeLine(500, 0, 0, 0);
+        gc.strokeLine(0, 0, 0, 499);
+        gc.strokeLine(0, 499, 499, 499);
+        gc.strokeLine(499, 499, 499, 0);
+        gc.strokeLine(499, 0, 0, 0);
 
 
     }

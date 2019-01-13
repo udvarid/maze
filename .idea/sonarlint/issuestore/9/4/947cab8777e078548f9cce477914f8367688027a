@@ -1,0 +1,5 @@
+
+bsquid:UselessImportCheck"7Remove this unused import 'javafx.scene.shape.ArcType'.(Φέμπ8Ξ°‰΅„-
+Isquid:S1481""+Remove this unused "label1" local variable.(βφτ8Ν†«Ά„-
+Jsquid:S16027",Remove useless curly braces around statement(θ¦Γΐ8—Ε΄Ά„-
+Xsquid:S1854"":Remove this useless assignment to local variable "label1".(βφτ8Ν†«Ά„-

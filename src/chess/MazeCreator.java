@@ -16,8 +16,8 @@ public class MazeCreator {
     private int doorOut;
     private GraphicsContext gc;
 
-    public MazeCreator(int n,GraphicsContext gc) {
-        this.maze = new Maze(n);
+    public MazeCreator(GraphicsContext gc) {
+        this.maze = new Maze(50);
         this.gc = gc;
         this.size = maze.getSize();
         doorIn = randomNumber.nextInt(this.size);
@@ -42,39 +42,28 @@ public class MazeCreator {
         for (int i = 0; i < this.size; i++) {
             for (int j = 0; j < this.size; j++) {
                 if (antre.getX() == i && antre.getY() == j ||
-                    exit.getX() == i && exit.getY() == j) {
+                        exit.getX() == i && exit.getY() == j) {
                     gc.setStroke(Color.BLACK);
-                }
-                else if (i == 0 || j == 0 || i == this.size - 1 || j == this.size -1) {
+                } else if (i == 0 || j == 0 || i == this.size - 1 || j == this.size - 1) {
                     gc.setStroke(Color.BLUE);
-                }
-                else if (maze.getMaze()[i][j].isWall()) {
+                } else if (maze.getMaze()[i][j].isWall()) {
                     gc.setStroke(Color.GREEN);
-                } else if (maze.getMaze()[i][j].isSign()){
+                } else if (maze.getMaze()[i][j].isSign()) {
                     gc.setStroke(Color.CYAN);
                 } else {
                     gc.setStroke(Color.WHITE);
                 }
-                gc.strokeLine(i*10, j*10, i*10, j*10);
+                gc.strokeLine(i * 10, j * 10, i * 10, j * 10);
 
-                /*
-                String sign = "  ";
-                if (maze.getMaze()[i][j].isWall()) {
-                    sign = "X ";
-                } else if (maze.getMaze()[i][j].isSign()){
-                    sign = ". ";
-                }
-                System.out.print(sign);
-                */
+
             }
-            //System.out.println();
         }
-        //System.out.println();
     }
 
     public void startDigging() {
         boolean exitWasFound = false;
         while (!exitWasFound) {
+            printMaze();
             exitWasFound = dig(antre);
             if (!exitWasFound) {
                 maze = new Maze(this.size);
@@ -87,17 +76,7 @@ public class MazeCreator {
 
         spot.setWall(false);
         spot.setSign(true);
-
-
-        /*
-        printMaze();
-        try {
-            Thread.sleep(250);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        */
-
+        changeOutfit(Color.CYAN, spot);
 
 
         if (new Coordinate(spot.getX(), spot.getY() + 1).equals(this.exit)) {
@@ -132,6 +111,7 @@ public class MazeCreator {
                     return true;
                 } else {
                     coordinateToCheck.setSign(false);
+                    changeOutfit(Color.WHITE,coordinateToCheck);
                 }
             } else {
                 iterator.remove();
@@ -140,6 +120,16 @@ public class MazeCreator {
 
 
         return false;
+    }
+
+    private void changeOutfit(Color color, Coordinate spot) {
+        gc.setStroke(color);
+        gc.strokeLine(spot.getX() * 10, spot.getY() * 10, spot.getX() * 10, spot.getY() * 10);
+        try {
+            Thread.sleep(10);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private boolean wayIsOk(Coordinate way) {

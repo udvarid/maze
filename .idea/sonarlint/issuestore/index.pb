@@ -7,3 +7,7 @@ I
 src/chess/Coordinate.java,2\0\20470e2599ac9cca879e5bacf52bbd6526271510
 J
 src/chess/MazeCreator.java,b\3\b3efa83fd151befab4c36dafc1712a6ffc6c2a59
+D
+src/module-info.java,c\d\cdc434daeee688944ced38ff1c9875422db88382
+<
+labirint.iml,e\d\ed77a66866b564ac50b024a013e8465f7b9d6670
